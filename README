@@ -1,0 +1,46 @@
+This repository is about gerrit docker following https://hub.docker.com/r/gerritcodereview/gerrit.
+
+1. Create local directory to share in container
+$ mkdir -p /external/gerrit/etc
+$ mkdir -p /external/gerrit/git
+$ mkdir -p /external/gerrit/db
+$ mkdir -p /external/gerrit/index
+$ mkdir -p /external/gerrit/cache
+
+$ mkdir -p /external/gerrit/ldap/var
+$ mkdir -p /external/gerrit/ldap/etc
+
+2. Create /external/gerrit/etc/gerrit.config
+$ cp gerrit.config /external/gerrit/etc/gerrit.config
+
+3. Create /external/gerrit/etc/secure.config
+$ cp secure.config /external/gerrit/etc/secure.config
+
+4. Run Gerrit, OpenLDAP, PhpLdapAdmin docker container
+$ docker-compose up -d
+
+5. Create Gerrit admin in OpenLDAP
+Access localhost:6443 and login using below account info.
+Username: cn=admin,dc=example,dc=org
+Password: secret
+
+Create a new child node of type "Courier Mail Account" for the Gerrit Administrator
+
+Example:
+
+Given Name: Gerrit
+Last Name: Admin
+Common Name: Gerrit Admin
+User ID: gerritadmin
+Email: gerritadmin@localdomain
+Password: secret
+
+Verify that your data is correct and then commit the changes to LDAP.
+
+6. Login to Gerrit as Admin
+Access http://localhost using Gerrit Admin account created on LDAP
+
+Example:
+
+Login: gerritadmin
+Password: secret
